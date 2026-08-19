@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronRight, ChevronLeft, Search, Phone, MessageCircle, Navigation, Mail, MapPin, Medal, ArrowUpRight, ArrowRight, Check, CheckCircle2, Star, Quote, Plus, Minus, Image as ImageIcon, BedDouble, Users, Maximize2, Wifi, Wind, Tv, Coffee, ShieldCheck, Bath, UtensilsCrossed, Wine, Fish, Utensils, Waves, Umbrella, Anchor, Car, Bell, Shirt, Dumbbell, Heart, Compass, Sunrise, Sunset, PartyPopper, Gem, Sparkles, Building2, Briefcase, Handshake, Monitor, Percent, Tag, Gift, CalendarDays, Filter, Camera, Send, Clock, HelpCircle, Calendar, CreditCard, User, Leaf, Award, Volume2, VolumeX, PlayCircle, RefreshCw, Lock, Baby, Sailboat } from "lucide-react";
 import PhotoPlaceholder from "../components/PhotoPlaceholder";
@@ -23,193 +23,227 @@ const ROOMS = [{
   name: "Deluxe Room",
   tag: "Garden View",
   price: "12,999",
-  tone: "sand"
+  tone: "sand",
+  image: "/deluxe-room.png"
 }, {
   name: "Premium Sea View",
   tag: "Ocean View",
   price: "18,999",
-  tone: "navy"
+  tone: "navy",
+  image: "/premium-sea-view.png"
 }, {
   name: "Beachfront Suite",
   tag: "Private Balcony",
   price: "28,999",
-  tone: "teal"
+  tone: "teal",
+  image: "/beachfront-suite.png"
 }];
 const CATEGORIES = [{
   icon: UtensilsCrossed,
   title: "Dining",
   desc: "A culinary journey like no other",
-  tone: "navy"
+  tone: "navy",
+  image: "/dining.png",
+  path: "/dining"
 }, {
   icon: Compass,
   title: "Experiences",
   desc: "Adventure, relaxation and more",
-  tone: "teal"
+  tone: "teal",
+  image: "/experiences.png",
+  path: "/experiences"
 }, {
   icon: Heart,
   title: "Weddings",
   desc: "Craft the wedding of your dreams",
-  tone: "sand"
+  tone: "sand",
+  image: "/weddings.png",
+  path: "/weddings"
 }, {
   icon: Building2,
   title: "Corporate Events",
   desc: "Inspire. Connect. Achieve.",
-  tone: "navy"
+  tone: "navy",
+  image: "/corporate-events.png",
+  path: "/corporate"
 }];
-const GALLERY_SHOTS = ["Pool at Dusk", "Sunset Over the Bay", "Palm-Lined Pathway", "Beachfront Deck", "Lobby & Lounge", "Sea View Balcony"];
 export default function HomePage() {
   const [muted, setMuted] = useState(true);
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-  const [galleryStart, setGalleryStart] = useState(0);
-  const visibleGallery = [0, 1, 2].map(i => GALLERY_SHOTS[(galleryStart + i) % GALLERY_SHOTS.length]);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = muted;
+    }
+  }, [muted]);
+
   return <>
-        {/* ============ HERO ============ */}
-        <section className="hero">
-          <div className="hero__bg">
-            <PhotoPlaceholder label="Hero — Resort Pool at Dusk" tone="navy" className="hero-ph" />
+    {/* ============ HERO ============ */}
+    <section className="hero">
+      <div className="hero__bg">
+        <video
+          ref={videoRef}
+          className="hero__video"
+          src="/bbr-hero-section-video.mp4"
+          autoPlay
+          loop
+          muted={muted}
+          playsInline
+        />
+      </div>
+      <div className="hero__scrim" />
+
+      <button className="mute-toggle" aria-label={muted ? "Unmute background video" : "Mute background video"} onClick={() => setMuted(m => !m)}>
+        {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+      </button>
+
+      <div className="quick-rail">
+        <a href="tel:+919876543210"><Phone size={18} /> Call Now</a>
+        <a href="https://wa.me/919876543210"><MessageCircle size={18} /> WhatsApp</a>
+        <a href="#"><Navigation size={18} /> Directions</a>
+      </div>
+
+      <div className="hero__content">
+        <div className="container">
+          <h1 className="hero__heading">Where Luxury<br />Meets the Sea</h1>
+          <p className="hero__sub">
+            A private beach resort offering world-class hospitality, exquisite dining
+            and unforgettable experiences.
+          </p>
+          <a
+            href="https://www.instagram.com/bombaybeachresort/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero__watch"
+          >
+            <PlayCircle size={34} strokeWidth={1.2} /> Watch the Experience
+          </a>
+
+          <div className="hero__book-row">
+            <Link to="/book" className="btn-gold hero__book-now">Book Now</Link>
           </div>
-          <div className="hero__scrim" />
+        </div>
+      </div>
+    </section>
 
-          <button className="mute-toggle" aria-label={muted ? "Unmute background video" : "Mute background video"} onClick={() => setMuted(m => !m)}>
-            {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-          </button>
+    {/* ============ FEATURES STRIP ============ */}
+    <div className="features-wrap container">
+      <div className="features-card">
+        {FEATURES.map(f => <div className="feature" key={f.title}>
+          <div className="icon-wrap"><f.icon size={22} strokeWidth={1.4} /></div>
+          <h3>{f.title}</h3>
+          <p>{f.desc}</p>
+        </div>)}
+      </div>
+    </div>
 
-          <div className="quick-rail">
-            <a href="tel:+919876543210"><Phone size={18} /> Call Now</a>
-            <a href="https://wa.me/919876543210"><MessageCircle size={18} /> WhatsApp</a>
-            <a href="#"><Navigation size={18} /> Directions</a>
-          </div>
+    {/* ============ ROOMS ============ */}
+    <section className="rooms-section container" id="rooms">
+      <div className="rooms-top">
+        <div className="heading-block">
+          <span className="eyebrow">Stay in Luxury</span>
+          <h2 className="section-heading">Designed for Comfort,<br />Curated for You</h2>
+        </div>
+        <Link to="/rooms" className="link-arrow">Explore Rooms &amp; Suites <ArrowUpRight size={16} /></Link>
+      </div>
 
-          <div className="hero__content">
-            <div className="container">
-              <h1 className="hero__heading">Where Luxury<br />Meets the Sea</h1>
-              <p className="hero__sub">
-                A private beach resort offering world-class hospitality, exquisite dining
-                and unforgettable experiences.
-              </p>
-              <button className="hero__watch">
-                <PlayCircle size={34} strokeWidth={1.2} /> Watch the Experience
-              </button>
-
-              <div className="hero__book-row">
-                <Link to="/book" className="btn-gold hero__book-now">Book Now</Link>
-              </div>
+      <div className="rooms-grid">
+        {ROOMS.map(r => <div className="home-room-card" key={r.name}>
+          {r.image ? (
+            <div className="home-room-card__media">
+              <img src={r.image} alt={r.name} className="home-room-card__img" loading="lazy" />
             </div>
+          ) : (
+            <PhotoPlaceholder label={`${r.name} Photo`} tone={r.tone} />
+          )}
+          <div className="home-room-card__body">
+            <div className="home-room-card__row">
+              <div>
+                <h3>{r.name}</h3>
+                <div className="tag">{r.tag}</div>
+              </div>
+              <Link to="/rooms" className="home-room-card__arrow" aria-label={`View ${r.name}`}><ArrowUpRight size={16} /></Link>
+            </div>
+            <div className="price">From <span>₹{r.price}</span> / night</div>
           </div>
-        </section>
+        </div>)}
+      </div>
+    </section>
 
-        {/* ============ FEATURES STRIP ============ */}
-        <div className="features-wrap container">
-          <div className="features-card">
-            {FEATURES.map(f => <div className="feature" key={f.title}>
-                <div className="icon-wrap"><f.icon size={22} strokeWidth={1.4} /></div>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
-              </div>)}
+    {/* ============ CATEGORIES ============ */}
+    <section className="categories-section container">
+      <div className="categories-grid">
+        {CATEGORIES.map(c => <div className="category-card" key={c.title} id={c.title.toLowerCase().replace(/\s+/g, "")}>
+          {c.image ? (
+            <img src={c.image} alt={c.title} className="category-card__img" loading="lazy" />
+          ) : (
+            <PhotoPlaceholder label={`${c.title} Photo`} tone={c.tone} />
+          )}
+          <div className="category-card__scrim" />
+          <div className="category-card__badge"><c.icon size={17} strokeWidth={1.5} /></div>
+          <div className="category-card__body">
+            <h3>{c.title}</h3>
+            <p>{c.desc}</p>
+            <Link to={c.path || "#"} className="link-arrow">Explore <ArrowUpRight size={14} /></Link>
+          </div>
+        </div>)}
+      </div>
+    </section>
+
+    {/* ============ REVIEWS ============ */}
+    <section className="reviews-section container" id="gallery">
+      <div className="reviews-card">
+        <div className="rating-block">
+          <span className="brand-name">Google Reviews</span>
+          <span className="score">4.8</span>
+          <div className="stars">
+            {Array.from({
+              length: 5
+            }).map((_, i) => <Star key={i} size={16} fill="currentColor" strokeWidth={0} />)}
+          </div>
+          <span className="count">1,200+ Reviews</span>
+        </div>
+
+        <div className="quote-block">
+          <Quote size={26} fill="currentColor" strokeWidth={0} />
+          <p>"An unforgettable stay! The beach, the service, the food – everything was perfect."</p>
+          <div className="quote-author">
+            <img src="/profile-img.png" alt="Priya S." className="quote-avatar" loading="lazy" />
+            <span>— Priya S.</span>
           </div>
         </div>
 
-        {/* ============ ROOMS ============ */}
-        <section className="rooms-section container" id="rooms">
-          <div className="rooms-top">
-            <div className="heading-block">
-              <span className="eyebrow">Stay in Luxury</span>
-              <h2 className="section-heading">Designed for Comfort,<br />Curated for You</h2>
-            </div>
-            <button className="link-arrow">Explore Rooms &amp; Suites <ArrowUpRight size={16} /></button>
+        <div className="reviews-img-wrap">
+          <img src="/review-img.png" alt="Resort guest review highlight" className="reviews-img" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    {/* ============ NEWSLETTER ============ */}
+    <section className="newsletter">
+      <div className="container">
+        <div className="newsletter__text">
+          <div className="icon-circle"><Mail size={20} /></div>
+          <div>
+            <h3>Stay Updated, Stay Inspired</h3>
+            <p>Subscribe for exclusive offers and updates.</p>
           </div>
+        </div>
 
-          <div className="rooms-grid">
-            {ROOMS.map(r => <div className="home-room-card" key={r.name}>
-                <PhotoPlaceholder label={`${r.name} Photo`} tone={r.tone} />
-                <div className="home-room-card__body">
-                  <div className="home-room-card__row">
-                    <div>
-                      <h3>{r.name}</h3>
-                      <div className="tag">{r.tag}</div>
-                    </div>
-                    <button className="home-room-card__arrow" aria-label={`View ${r.name}`}><ArrowUpRight size={16} /></button>
-                  </div>
-                  <div className="price">From <span>₹{r.price}</span> / night</div>
-                </div>
-              </div>)}
-          </div>
-        </section>
-
-        {/* ============ CATEGORIES ============ */}
-        <section className="categories-section container">
-          <div className="categories-grid">
-            {CATEGORIES.map(c => <div className="category-card" key={c.title} id={c.title.toLowerCase().replace(/\s+/g, "")}>
-                <PhotoPlaceholder label={`${c.title} Photo`} tone={c.tone} />
-                <div className="category-card__scrim" />
-                <div className="category-card__badge"><c.icon size={17} strokeWidth={1.5} /></div>
-                <div className="category-card__body">
-                  <h3>{c.title}</h3>
-                  <p>{c.desc}</p>
-                  <button className="link-arrow">Explore <ArrowUpRight size={14} /></button>
-                </div>
-              </div>)}
-          </div>
-        </section>
-
-        {/* ============ REVIEWS ============ */}
-        <section className="reviews-section container" id="gallery">
-          <div className="reviews-card">
-            <div className="rating-block">
-              <span className="brand-name">Google Reviews</span>
-              <span className="score">4.8</span>
-              <div className="stars">
-                {Array.from({
-              length: 5
-            }).map((_, i) => <Star key={i} size={16} fill="currentColor" strokeWidth={0} />)}
-              </div>
-              <span className="count">1,200+ Reviews</span>
-            </div>
-
-            <div className="quote-block">
-              <Quote size={26} fill="currentColor" strokeWidth={0} />
-              <p>"An unforgettable stay! The beach, the service, the food – everything was perfect."</p>
-              <div className="quote-author">
-                <PhotoPlaceholder label="Guest" tone="gold" icon={Users} />
-                <span>— Priya S.</span>
-              </div>
-            </div>
-
-            <div className="gallery-strip">
-              <div className="thumbs">
-                {visibleGallery.map((shot, i) => <PhotoPlaceholder key={shot + i} label={shot} tone={i % 2 === 0 ? "navy" : "teal"} />)}
-              </div>
-              <button className="gallery-next" aria-label="Show more photos" onClick={() => setGalleryStart(s => (s + 1) % GALLERY_SHOTS.length)}>
-                <ChevronRight size={16} />
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* ============ NEWSLETTER ============ */}
-        <section className="newsletter">
-          <div className="container">
-            <div className="newsletter__text">
-              <div className="icon-circle"><Mail size={20} /></div>
-              <div>
-                <h3>Stay Updated, Stay Inspired</h3>
-                <p>Subscribe for exclusive offers and updates.</p>
-              </div>
-            </div>
-
-            {subscribed ? <span className="confirm">Thanks — you're on the list!</span> : <form onSubmit={e => {
+        {subscribed ? <span className="confirm">Thanks — you're on the list!</span> : <form onSubmit={e => {
           e.preventDefault();
           if (email.trim()) {
             setSubscribed(true);
             setEmail("");
           }
         }}>
-                <input type="email" required placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} aria-label="Email address" />
-                <button type="submit" className="btn-gold">Subscribe</button>
-              </form>}
-          </div>
-        </section>
+          <input type="email" required placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} aria-label="Email address" />
+          <button type="submit" className="btn-gold">Subscribe</button>
+        </form>}
+      </div>
+    </section>
 
-    </>;
+  </>;
 }

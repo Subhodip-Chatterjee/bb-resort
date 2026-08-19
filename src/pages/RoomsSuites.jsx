@@ -14,7 +14,8 @@ export default function RoomsSuitesPage() {
     bed: "King Bed",
     size: "34 m²",
     price: "12,999",
-    tone: "sand"
+    tone: "sand",
+    image: "/deluxe-room.png"
   }, {
     key: "beachfront",
     filter: ["all", "ocean", "beachfront"],
@@ -25,7 +26,8 @@ export default function RoomsSuitesPage() {
     bed: "King Bed",
     size: "42 m²",
     price: "18,999",
-    tone: "navy"
+    tone: "navy",
+    image: "/premium-sea-view.png"
   }, {
     key: "suite",
     filter: ["all", "beachfront", "suites"],
@@ -36,7 +38,8 @@ export default function RoomsSuitesPage() {
     bed: "King Bed",
     size: "60 m²",
     price: "28,999",
-    tone: "teal"
+    tone: "teal",
+    image: "/beachfront-suite.png"
   }, {
     key: "family",
     filter: ["all", "family", "accessible"],
@@ -200,7 +203,11 @@ export default function RoomsSuitesPage() {
               {visibleRooms.map(r => <div className="room-card" key={r.name}>
                   <div className="ph-wrap">
                     <span className="badge">{r.badge}</span>
-                    <PhotoPlaceholder label={`${r.name} Photo`} tone={r.tone} />
+                    {r.image ? (
+                      <img src={r.image} alt={r.name} className="room-card__img" loading="lazy" />
+                    ) : (
+                      <PhotoPlaceholder label={`${r.name} Photo`} tone={r.tone} />
+                    )}
                     <div className="arrows"><button aria-label="Previous photo"><ChevronLeft size={14} /></button><button aria-label="Next photo"><ChevronRight size={14} /></button></div>
                   </div>
                   <div className="room-card__body">
