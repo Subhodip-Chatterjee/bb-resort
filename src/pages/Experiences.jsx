@@ -74,7 +74,7 @@ export default function ExperiencesPage() {
   return <>
 
         <section className="page-hero">
-          <PhotoPlaceholder label="Experiences — Sunset Over the Beach" tone="sand" />
+          <img src="/experiences-hero.png" alt="Experiences at Bombay Beach Resort" className="page-hero__img" />
           <div className="page-hero__scrim" />
           <div className="page-hero__content">
             <div className="container">

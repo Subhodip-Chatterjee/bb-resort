@@ -8,7 +8,7 @@ export default function DiningPage() {
   return <>
 
         <section className="page-hero">
-          <PhotoPlaceholder label="Dining — Beachfront Restaurant at Dusk" tone="sand" />
+          <img src="/dining-hero.png" alt="Dining at Bombay Beach Resort" className="page-hero__img" />
           <div className="page-hero__scrim" />
           <div className="page-hero__content">
             <div className="container">

@@ -53,7 +53,7 @@ export default function WeddingsPage() {
   return <>
 
         <section className="page-hero">
-          <PhotoPlaceholder label="Weddings — Beach Mandap at Dusk" tone="sand" />
+          <img src="/weddings-hero.png" alt="Weddings at Bombay Beach Resort" className="page-hero__img" />
           <div className="page-hero__scrim" />
           <div className="page-hero__content">
             <div className="container">

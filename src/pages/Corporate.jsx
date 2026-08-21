@@ -32,7 +32,7 @@ export default function CorporatePage() {
   return <>
 
         <section className="page-hero">
-          <PhotoPlaceholder label="Corporate — Ocean View Boardroom" tone="navy" />
+          <img src="/corporate-hero.png" alt="Corporate Events at Bombay Beach Resort" className="page-hero__img" />
           <div className="page-hero__scrim" />
           <div className="page-hero__content">
             <div className="container">
